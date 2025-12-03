@@ -46,7 +46,7 @@ export default function Login() {
 
           localStorage.setItem('user', JSON.stringify(userData));
 
-          navigate('/posts');
+          navigate('/movies');
 
         } else {
 
@@ -144,7 +144,7 @@ export default function Login() {
 
                 <div className="d-grid">
                   <Button
-                    variant="dark"
+                    variant="danger"
                     type="submit"
                     disabled={!isActive || loading}
                     size="lg"
@@ -171,7 +171,7 @@ export default function Login() {
               <div className="mt-4">
                 <p className="mb-0">
                   Don’t have an account?{' '}
-                  <a href="/register" className="text-decoration-none fw-semibold text-dark">
+                  <a href="/register" className="text-decoration-none fw-semibold text-danger">
                     Register
                   </a>
                 </p>

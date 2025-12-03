@@ -40,7 +40,7 @@ export default function Register() {
 
           navigate('/login');
 
-      } else if (data.error === 'Password must be at least 8 characters') {
+      } else if (data.error === 'Password must be atleast 8 characters') {
 
           notyf.error('Password must be at least 8 characters');
 
@@ -112,7 +112,7 @@ export default function Register() {
 
                   <div className="d-grid">
                     <Button
-                      variant="dark"
+                      variant="danger"
                       type="submit"
                       disabled={!isActive || loading}
                       size="lg"
@@ -139,7 +139,7 @@ export default function Register() {
                 <div className="mt-4">
                   <p className="mb-0">
                     Already have an account?{' '}
-                    <a href="/login" className="text-decoration-none fw-semibold text-dark">
+                    <a href="/login" className="text-decoration-none fw-semibold text-danger">
                       Login
                     </a>
                   </p>
