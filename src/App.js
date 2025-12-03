@@ -44,7 +44,7 @@ function App() {
       return;
     }
 
-    fetch('https://movieapp-api-lms1.onrender.com/users/details', {
+    fetch('https://rmantonio-movieappserver.onrender.com/users/details', {
       headers: {
         Authorization: `Bearer ${token}`,
       },

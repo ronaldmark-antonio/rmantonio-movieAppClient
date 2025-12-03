@@ -16,7 +16,7 @@ export default function ViewMovie() {
 
       try {
         const res = await fetch(
-          `https://movieapp-api-lms1.onrender.com/movies/getMovie/${id}`,
+          `https://rmantonio-movieappserver.onrender.com/movies/getMovie/${id}`,
           { 
             method: 'GET',
             headers: { Authorization: `Bearer ${token}` },

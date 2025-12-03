@@ -27,7 +27,7 @@ export default function AdminView() {
 
       try {
         const res = await fetch(
-          'https://movieapp-api-lms1.onrender.com/movies/getMovies',
+          'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
           {
             method: 'GET',
             headers: {
@@ -66,7 +66,7 @@ export default function AdminView() {
 
     try {
       const res = await fetch(
-        'https://movieapp-api-lms1.onrender.com/movies/addMovie',
+        'https://rmantonio-movieappserver.onrender.com/movies/addMovie',
         {
           method: 'POST',
           headers: {
@@ -80,7 +80,7 @@ export default function AdminView() {
       if (!res.ok) throw new Error('Failed to add movie');
 
       const res2 = await fetch(
-        'https://movieapp-api-lms1.onrender.com/movies/getMovies',
+        'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
         {
           headers: { Authorization: `Bearer ${token}` },
         }

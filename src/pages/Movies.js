@@ -15,8 +15,8 @@ export default function MoviesPage() {
         try {
           const token = localStorage.getItem('token');
           const endpoint = user.isAdmin
-            ? 'https://movieapp-api-lms1.onrender.com/movies/getMovies'
-            : 'https://movieapp-api-lms1.onrender.com/movies/getMovies';
+            ? 'https://rmantonio-movieappserver.onrender.com/movies/getMovies'
+            : 'https://rmantonio-movieappserver.onrender.com/movies/getMovies';
 
           const response = await fetch(endpoint, {
             method: 'GET',
