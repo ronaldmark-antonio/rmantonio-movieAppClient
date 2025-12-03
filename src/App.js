@@ -7,7 +7,6 @@ import Register from './pages/Register';
 import Movies from './pages/Movies';
 import UserProvider from './UserContext';
 import AdminView from './components/AdminView';
-import UserView from './components/UserView';
 import ViewMovie from './components/ViewMovie';
 
 function App() {
