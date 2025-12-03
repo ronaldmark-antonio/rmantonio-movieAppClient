@@ -1,8 +1,8 @@
 {
-    "url": "https://rmantonio-movie-app-client.vercel.app",
+    "url": "?",
     "endpoints": {
         "register": "/register",
         "login": "/login",
-        "movies": "/movies"
+        "posts": "/posts"
     }
 }

@@ -27,7 +27,11 @@ export default function AdminView() {
 
       try {
         const res = await fetch(
+<<<<<<< HEAD
           'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
+=======
+          'https://rmantonio-blogapp.onrender.com/posts/getPosts',
+>>>>>>> 43dab5307a81d472c2f0d259e6a8d654d9b095a1
           {
             method: 'GET',
             headers: {
@@ -36,15 +40,15 @@ export default function AdminView() {
           }
         );
 
-        if (!res.ok) throw new Error('Failed to fetch movies');
+        if (!res.ok) throw new Error('Failed to fetch posts');
 
 	        const data = await res.json();
 
-	        setMovies(Array.isArray(data.movies) ? data.movies : []);
+	        setMovies(Array.isArray(data.posts) ? data.posts : []);
 
       } catch (err) {
-	        console.error('Error loading movies:', err);
-	        alert('Could not load movies.');
+	        console.error('Error loading posts:', err);
+	        alert('Could not load posts.');
       }
     };
 

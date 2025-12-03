@@ -25,7 +25,11 @@ export default function Login() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
 
+<<<<<<< HEAD
       const res = await fetch('https://rmantonio-movieappserver.onrender.com/users/login', {
+=======
+      const res = await fetch('https://rmantonio-blogapp.onrender.com/users/login', {
+>>>>>>> 43dab5307a81d472c2f0d259e6a8d654d9b095a1
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -46,7 +50,7 @@ export default function Login() {
 
           localStorage.setItem('user', JSON.stringify(userData));
 
-          navigate('/movies');
+          navigate('/posts');
 
         } else {
 
@@ -79,7 +83,11 @@ export default function Login() {
 
   const retrieveUserDetails = async (token) => {
     try {
+<<<<<<< HEAD
       const res = await fetch('https://rmantonio-movieappserver.onrender.com/users/details', {
+=======
+      const res = await fetch('https://rmantonio-blogapp.onrender.com/users/details', {
+>>>>>>> 43dab5307a81d472c2f0d259e6a8d654d9b095a1
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -144,7 +152,7 @@ export default function Login() {
 
                 <div className="d-grid">
                   <Button
-                    variant="danger"
+                    variant="dark"
                     type="submit"
                     disabled={!isActive || loading}
                     size="lg"
@@ -171,7 +179,7 @@ export default function Login() {
               <div className="mt-4">
                 <p className="mb-0">
                   Don’t have an account?{' '}
-                  <a href="/register" className="text-decoration-none fw-semibold text-danger">
+                  <a href="/register" className="text-decoration-none fw-semibold text-dark">
                     Register
                   </a>
                 </p>
