@@ -27,11 +27,8 @@ export default function AdminView() {
 
       try {
         const res = await fetch(
-<<<<<<< HEAD
           'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
-=======
           'https://rmantonio-blogapp.onrender.com/posts/getPosts',
->>>>>>> 43dab5307a81d472c2f0d259e6a8d654d9b095a1
           {
             method: 'GET',
             headers: {

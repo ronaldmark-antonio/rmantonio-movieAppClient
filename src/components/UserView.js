@@ -44,7 +44,6 @@ export default function UserView() {
   };
 
   useEffect(() => {
-<<<<<<< HEAD
     const fetchMovies = async () => {
 
       try {
@@ -70,9 +69,6 @@ export default function UserView() {
     };
 
     fetchMovies();
-=======
-    fetchPosts();
->>>>>>> 43dab5307a81d472c2f0d259e6a8d654d9b095a1
   }, [token]);
 
   // Open modal for add post

@@ -22,11 +22,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-<<<<<<< HEAD
       const res = await fetch('https://rmantonio-movieappserver.onrender.com/users/register', {
-=======
-      const res = await fetch('https://rmantonio-blogapp.onrender.com/users/register', {
->>>>>>> 43dab5307a81d472c2f0d259e6a8d654d9b095a1
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, isAdmin: false }),

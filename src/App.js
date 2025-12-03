@@ -44,11 +44,7 @@ function App() {
       return;
     }
 
-<<<<<<< HEAD
     fetch('https://rmantonio-movieappserver.onrender.com/users/details', {
-=======
-    fetch('https://rmantonio-blogapp.onrender.com/users/details', {
->>>>>>> 43dab5307a81d472c2f0d259e6a8d654d9b095a1
       headers: {
         Authorization: `Bearer ${token}`,
       },
