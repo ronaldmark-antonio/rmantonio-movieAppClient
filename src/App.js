@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Posts from './pages/Posts';
+import Movies from './pages/Movies';
 import UserProvider from './UserContext';
 import AdminView from './components/AdminView';
 import UserView from './components/UserView';
@@ -87,7 +87,7 @@ function App() {
   }
 
   const RedirectIfLoggedIn = ({ children }) => {
-    return user.id ? <Navigate to="/posts" replace /> : children;
+    return user.id ? <Navigate to="/movies" replace /> : children;
   };
 
   const ProtectedRoute = ({ children }) => {
@@ -116,10 +116,10 @@ function App() {
               }
             />
 
-            <Route path="/" element={<Navigate to="/posts" replace />} />
+            <Route path="/" element={<Navigate to="/movies" replace />} />
             
             <Route
-              path="/posts"
+              path="/movies"
               element={
                 <ProtectedRoute>
                   {user.isAdmin ? <AdminView /> : <UserView />}
@@ -127,7 +127,7 @@ function App() {
               }
             />
 
-            <Route path="/post/:id" element={<ViewMovie />} />
+            <Route path="/movie/:id" element={<ViewMovie />} />
           </Routes>
         </Container>
       </Router>
