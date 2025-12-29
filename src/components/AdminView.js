@@ -20,31 +20,29 @@ export default function AdminView() {
     genre: '',
   });
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editMovieId, setEditMovieId] = useState(null);
+
   const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchMovies = async () => {
-
       try {
         const res = await fetch(
           'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
           {
             method: 'GET',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
         if (!res.ok) throw new Error('Failed to fetch movies');
 
-	        const data = await res.json();
-
-	        setMovies(Array.isArray(data.movies) ? data.movies : []);
-
+        const data = await res.json();
+        setMovies(Array.isArray(data.movies) ? data.movies : []);
       } catch (err) {
-	        console.error('Error loading movies:', err);
-	        alert('Could not load movies.');
+        console.error('Error loading movies:', err);
+        alert('Could not load movies.');
       }
     };
 
@@ -52,7 +50,18 @@ export default function AdminView() {
   }, [token]);
 
   const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setIsEditing(false);
+    setEditMovieId(null);
+    setNewMovie({
+      title: '',
+      director: '',
+      year: '',
+      description: '',
+      genre: '',
+    });
+  };
 
   const handleChange = (e) => {
     setNewMovie({
@@ -61,9 +70,9 @@ export default function AdminView() {
     });
   };
 
+  // Add movie
   const handleAddMovie = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch(
         'https://rmantonio-movieappserver.onrender.com/movies/addMovie',
@@ -76,56 +85,75 @@ export default function AdminView() {
           body: JSON.stringify(newMovie),
         }
       );
-
       if (!res.ok) throw new Error('Failed to add movie');
-
-      const res2 = await fetch(
-        'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      const data2 = await res2.json();
-
-      setMovies(Array.isArray(data2.movies) ? data2.movies : []);
-
+      await refreshMovies();
       notyf.success('Movie added successfully!');
-
-      setNewMovie({
-        title: '',
-        director: '',
-        year: '',
-        description: '',
-        genre: '',
-      });
-
       handleClose();
-
     } catch (err) {
       console.error('Error adding movie:', err);
       notyf.error('Could not add movie.');
     }
   };
 
+  // Edit movie
+  const handleEditMovie = (movie) => {
+    setIsEditing(true);
+    setEditMovieId(movie._id);
+    setNewMovie({
+      title: movie.title,
+      director: movie.director,
+      year: movie.year,
+      description: movie.description,
+      genre: movie.genre,
+    });
+    handleShow();
+  };
+
+  const handleUpdateMovie = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(
+        `https://rmantonio-movieappserver.onrender.com/movies/updateMovie/${editMovieId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newMovie),
+        }
+      );
+      if (!res.ok) throw new Error('Failed to update movie');
+      await refreshMovies();
+      notyf.success('Movie updated successfully!');
+      handleClose();
+    } catch (err) {
+      console.error('Error updating movie:', err);
+      notyf.error('Could not update movie.');
+    }
+  };
+
+  const refreshMovies = async () => {
+    const res = await fetch(
+      'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const data = await res.json();
+    setMovies(Array.isArray(data.movies) ? data.movies : []);
+  };
+
   const handleLogout = () => {
-
     localStorage.removeItem('token');
-
     window.location.href = '/login';
   };
 
   const totalPages = Math.ceil(movies.length / moviesPerPage);
   const indexOfLast = currentPage * moviesPerPage;
   const indexOfFirst = indexOfLast - moviesPerPage;
-  const currentMovies = [...movies]
-    .reverse()
-    .slice(indexOfFirst, indexOfLast);
+  const currentMovies = [...movies].reverse().slice(indexOfFirst, indexOfLast);
 
   const handlePageChange = (pageNumber) => {
-
     setCurrentPage(pageNumber);
-
     window.scrollTo(0, 0);
   };
 
@@ -143,13 +171,7 @@ export default function AdminView() {
               variant="danger"
               onClick={handleShow}
               className="me-2"
-              id="addMovie"
-              style={{
-                borderRadius: '12px',
-                padding: '8px 20px',
-                fontWeight: '600',
-                letterSpacing: '0.05em',
-              }}
+              style={{ borderRadius: '12px', padding: '8px 20px', fontWeight: '600' }}
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#b02a37')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
             >
@@ -158,12 +180,7 @@ export default function AdminView() {
             <Button
               variant="dark"
               onClick={handleLogout}
-              style={{
-                borderRadius: '12px',
-                padding: '8px 20px',
-                fontWeight: '600',
-                letterSpacing: '0.05em',
-              }}
+              style={{ borderRadius: '12px', padding: '8px 20px', fontWeight: '600' }}
             >
               Logout
             </Button>
@@ -179,8 +196,7 @@ export default function AdminView() {
           responsive
           style={{
             borderRadius: '12px',
-            boxShadow:
-              '0 4px 8px rgba(0, 0, 0, 0.15), 0 6px 20px rgba(0, 0, 0, 0.10)',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.15), 0 6px 20px rgba(0,0,0,0.10)',
           }}
           className="bg-white"
         >
@@ -192,6 +208,7 @@ export default function AdminView() {
               <th>Year</th>
               <th>Description</th>
               <th>Genre</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -206,11 +223,20 @@ export default function AdminView() {
                     {movie.description || 'No description'}
                   </td>
                   <td>{movie.genre || 'N/A'}</td>
+                  <td>
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      onClick={() => handleEditMovie(movie)}
+                    >
+                      Edit
+                    </Button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="text-center">
+                <td colSpan="7" className="text-center">
                   No movies found.
                 </td>
               </tr>
@@ -228,11 +254,7 @@ export default function AdminView() {
                   key={page}
                   active={isActive}
                   onClick={() => handlePageChange(page)}
-                  className={
-                    isActive
-                      ? 'bg-danger text-white border-danger'
-                      : 'bg-dark text-white'
-                  }
+                  className={isActive ? 'bg-danger text-white border-danger' : 'bg-dark text-white'}
                   style={{
                     border: 'none',
                     margin: '0 4px',
@@ -257,11 +279,12 @@ export default function AdminView() {
           contentClassName="rounded-4 shadow-sm border-0"
         >
           <Modal.Header closeButton className="border-0 pb-2">
-            <Modal.Title className="fw-bold fs-4">Add Movie</Modal.Title>
+            <Modal.Title className="fw-bold fs-4">{isEditing ? 'Edit Movie' : 'Add Movie'}</Modal.Title>
           </Modal.Header>
 
-          <Form onSubmit={handleAddMovie}>
+          <Form onSubmit={isEditing ? handleUpdateMovie : handleAddMovie}>
             <Modal.Body className="px-4 pt-0">
+              {/* Title */}
               <Form.Group className="mb-3" controlId="formTitle">
                 <Form.Label className="fw-semibold">Title</Form.Label>
                 <Form.Control
@@ -271,15 +294,11 @@ export default function AdminView() {
                   onChange={handleChange}
                   required
                   placeholder="Enter movie title"
-                  style={{
-                    borderRadius: '12px',
-                    borderColor: '#ddd',
-                    padding: '10px 15px',
-                    fontSize: '1rem',
-                  }}
+                  style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem' }}
                 />
               </Form.Group>
 
+              {/* Director */}
               <Form.Group className="mb-3" controlId="formDirector">
                 <Form.Label className="fw-semibold">Director</Form.Label>
                 <Form.Control
@@ -289,15 +308,11 @@ export default function AdminView() {
                   onChange={handleChange}
                   required
                   placeholder="Director's name"
-                  style={{
-                    borderRadius: '12px',
-                    borderColor: '#ddd',
-                    padding: '10px 15px',
-                    fontSize: '1rem',
-                  }}
+                  style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem' }}
                 />
               </Form.Group>
 
+              {/* Year */}
               <Form.Group className="mb-3" controlId="formYear">
                 <Form.Label className="fw-semibold">Year</Form.Label>
                 <Form.Control
@@ -309,15 +324,11 @@ export default function AdminView() {
                   placeholder="Release year"
                   min={1888}
                   max={new Date().getFullYear()}
-                  style={{
-                    borderRadius: '12px',
-                    borderColor: '#ddd',
-                    padding: '10px 15px',
-                    fontSize: '1rem',
-                  }}
+                  style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem' }}
                 />
               </Form.Group>
 
+              {/* Description */}
               <Form.Group className="mb-3" controlId="formDescription">
                 <Form.Label className="fw-semibold">Description</Form.Label>
                 <Form.Control
@@ -328,16 +339,11 @@ export default function AdminView() {
                   onChange={handleChange}
                   required
                   placeholder="Brief movie description"
-                  style={{
-                    borderRadius: '12px',
-                    borderColor: '#ddd',
-                    padding: '10px 15px',
-                    fontSize: '1rem',
-                    resize: 'vertical',
-                  }}
+                  style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem', resize: 'vertical' }}
                 />
               </Form.Group>
 
+              {/* Genre */}
               <Form.Group className="mb-3" controlId="formGenre">
                 <Form.Label className="fw-semibold">Genre</Form.Label>
                 <Form.Control
@@ -347,12 +353,7 @@ export default function AdminView() {
                   onChange={handleChange}
                   required
                   placeholder="Genre(s)"
-                  style={{
-                    borderRadius: '12px',
-                    borderColor: '#ddd',
-                    padding: '10px 15px',
-                    fontSize: '1rem',
-                  }}
+                  style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem' }}
                 />
               </Form.Group>
             </Modal.Body>
@@ -361,29 +362,18 @@ export default function AdminView() {
               <Button
                 variant="secondary"
                 onClick={handleClose}
-                style={{
-                  borderRadius: '12px',
-                  padding: '8px 20px',
-                  fontWeight: '600',
-                  letterSpacing: '0.05em',
-                }}
+                style={{ borderRadius: '12px', padding: '8px 20px', fontWeight: '600', letterSpacing: '0.05em' }}
               >
                 Cancel
               </Button>
               <Button
                 variant="danger"
                 type="submit"
-                id="addMovie"
-                style={{
-                  borderRadius: '12px',
-                  padding: '8px 20px',
-                  fontWeight: '600',
-                  letterSpacing: '0.05em',
-                }}
+                style={{ borderRadius: '12px', padding: '8px 20px', fontWeight: '600', letterSpacing: '0.05em' }}
                 onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#b02a37')}
                 onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
               >
-                Submit
+                {isEditing ? 'Update' : 'Submit'}
               </Button>
             </Modal.Footer>
           </Form>
