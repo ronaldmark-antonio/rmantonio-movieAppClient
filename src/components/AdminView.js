@@ -221,7 +221,7 @@ export default function AdminView() {
           }}
           className="bg-white"
         >
-          <thead className="table-dark">
+          <thead className="table-dark text-center">
             <tr>
               <th>#</th>
               <th>Title</th>
@@ -232,45 +232,49 @@ export default function AdminView() {
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            {currentMovies.length > 0 ? (
-              currentMovies.map((movie, index) => (
-                <tr key={movie._id || index}>
-                  <td>{indexOfFirst + index + 1}</td>
-                  <td>{movie.title || 'Untitled'}</td>
-                  <td>{movie.director || 'N/A'}</td>
-                  <td>{movie.year || 'N/A'}</td>
-                  <td style={{ maxWidth: '300px', whiteSpace: 'normal' }}>
-                    {movie.description || 'No description'}
-                  </td>
-                  <td>{movie.genre || 'N/A'}</td>
-                  <td>
-                    <Button
-                      variant="warning"
-                      size="sm"
-                      className="me-2"
-                      onClick={() => handleEditMovie(movie)}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={() => handleDeleteMovie(movie._id)}
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="7" className="text-center">
-                  No movies found.
-                </td>
-              </tr>
-            )}
-          </tbody>
+<tbody>
+  {currentMovies.length > 0 ? (
+    currentMovies.map((movie, index) => (
+      <tr key={movie._id || index} style={{ height: '20px' }}>
+        <td>{indexOfFirst + index + 1}</td>
+        <td>{movie.title || 'Untitled'}</td>
+        <td>{movie.director || 'N/A'}</td>
+        <td>{movie.year || 'N/A'}</td>
+        <td style={{ maxWidth: '250px', whiteSpace: 'normal' }}>
+          {movie.description || 'No description'}
+        </td>
+        <td>{movie.genre || 'N/A'}</td>
+        <td style={{ width: '130px', textAlign: 'center' }}>
+          <div className="d-flex justify-content-center gap-2">
+            <Button
+              variant="warning"
+              size="sm"
+              onClick={() => handleEditMovie(movie)}
+              style={{ padding: '4px 8px', fontSize: '0.8rem' }}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={() => handleDeleteMovie(movie._id)}
+              style={{ padding: '4px 8px', fontSize: '0.8rem' }}
+            >
+              Delete
+            </Button>
+          </div>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="7" className="text-center">
+        No movies found.
+      </td>
+    </tr>
+  )}
+</tbody>
+
         </Table>
 
         {totalPages > 1 && (
