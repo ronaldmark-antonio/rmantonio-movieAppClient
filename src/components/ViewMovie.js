@@ -1,14 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import {
-  Card,
-  Container,
-  Breadcrumb,
-  Button,
-  ListGroup,
-  Spinner,
-  Form
-} from 'react-bootstrap';
+import { Card, Container, Breadcrumb, Button, ListGroup, Spinner, Form } from 'react-bootstrap';
 import logo from '../images/streamflix-logo.png';
 
 export default function ViewMovie() {
@@ -22,14 +14,12 @@ export default function ViewMovie() {
 
   const token = localStorage.getItem('token');
 
-  // 🔒 Redirect if not logged in (PREVENTS 401)
   useEffect(() => {
     if (!token) {
       navigate('/login');
     }
   }, [token, navigate]);
 
-  // ✅ reusable fetch
   const fetchMovie = async () => {
     try {
       const res = await fetch(
@@ -42,13 +32,12 @@ export default function ViewMovie() {
       );
 
       if (!res.ok) throw new Error('Failed to fetch movie details');
-
-      const data = await res.json();
-      setMovie(data);
+        const data = await res.json();
+        setMovie(data);
     } catch (err) {
-      setError(err.message);
+        setError(err.message);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   };
 
@@ -56,7 +45,6 @@ export default function ViewMovie() {
     if (token) fetchMovie();
   }, [id, token]);
 
-  // ✅ ADD COMMENT (correct + refresh)
   const handleAddComment = async () => {
     if (!comment.trim()) return;
 
@@ -74,11 +62,10 @@ export default function ViewMovie() {
       );
 
       if (!res.ok) throw new Error('Failed to add comment');
-
-      setComment('');
-      fetchMovie(); // 🔄 refresh comments
+        setComment('');
+        fetchMovie();
     } catch (err) {
-      alert(err.message);
+        alert(err.message);
     }
   };
 
