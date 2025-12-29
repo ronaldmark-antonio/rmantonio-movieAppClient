@@ -133,6 +133,27 @@ export default function AdminView() {
     }
   };
 
+  // Delete movie
+  const handleDeleteMovie = async (movieId) => {
+    if (!window.confirm('Are you sure you want to delete this movie?')) return;
+
+    try {
+      const res = await fetch(
+        `https://rmantonio-movieappserver.onrender.com/movies/deleteMovie/${movieId}`,
+        {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!res.ok) throw new Error('Failed to delete movie');
+      await refreshMovies();
+      notyf.success('Movie deleted successfully!');
+    } catch (err) {
+      console.error('Error deleting movie:', err);
+      notyf.error('Could not delete movie.');
+    }
+  };
+
   const refreshMovies = async () => {
     const res = await fetch(
       'https://rmantonio-movieappserver.onrender.com/movies/getMovies',
@@ -175,7 +196,7 @@ export default function AdminView() {
               onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#b02a37')}
               onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '')}
             >
-              + Add Movie
+              Add Movie
             </Button>
             <Button
               variant="dark"
@@ -227,9 +248,17 @@ export default function AdminView() {
                     <Button
                       variant="warning"
                       size="sm"
+                      className="me-2"
                       onClick={() => handleEditMovie(movie)}
                     >
                       Edit
+                    </Button>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleDeleteMovie(movie._id)}
+                    >
+                      Delete
                     </Button>
                   </td>
                 </tr>
