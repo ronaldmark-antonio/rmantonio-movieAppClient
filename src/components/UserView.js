@@ -151,7 +151,7 @@ const handleLogout = () => {
                               paddingLeft: '18px',
                             }}
                           >
-                            {movie.comments.map((c) => (
+                            {[...movie.comments].reverse().map((c) => (
                               <li key={c._id}>{c.comment}</li>
                             ))}
                           </ul>

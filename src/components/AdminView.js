@@ -170,7 +170,7 @@ export default function AdminView() {
           </div>
         </div>
 
-        <h2 className="fw-bold text-dark mb-4 text-center">Admin Dashboard</h2>
+        <h2 className="fw-bold text-dark mb-4 text-center">Admin - Movie Dashboard</h2>
 
         <Table
           striped
