@@ -25,7 +25,7 @@ export default function Login() {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
 
-      const res = await fetch('https://movieapp-api-lms1.onrender.com/users/login', {
+      const res = await fetch('https://rmantonio-movieappserver.onrender.com/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -40,6 +40,7 @@ export default function Login() {
         notyf.success('Login successful!');
 
         const userData = await retrieveUserDetails(token);
+        console.log('Retrieved user data:', userData);
 
         if (userData) {
           setUser(userData);
@@ -79,11 +80,12 @@ export default function Login() {
 
   const retrieveUserDetails = async (token) => {
     try {
-      const res = await fetch('https://movieapp-api-lms1.onrender.com/users/details', {
+      const res = await fetch('https://rmantonio-movieappserver.onrender.com/users/details', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = await res.json();
+      console.log('Raw /users/details response:', data);
 
       if (data.user) {
         return {

@@ -19,7 +19,7 @@ export default function UserView() {
     const fetchMovies = async () => {
 
       try {
-        const res = await fetch('https://movieapp-api-lms1.onrender.com/movies/getMovies', {
+        const res = await fetch('https://rmantonio-movieappserver.onrender.com/movies/getMovies', {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
