@@ -108,56 +108,67 @@ export default function ViewMovie() {
         </div>
 
         <Card className="border-0 shadow rounded">
-          <Card.Body>
-            <h2 className="fw-bold mb-3">{movie.title}</h2>
+        <Card.Body className="p-3">
+          <h4 className="fw-bold mb-2">{movie.title}</h4>
 
-            <p><strong>Directed by:</strong> {movie.director}</p>
-            <p><strong>Year:</strong> {movie.year}</p>
-            <p><strong>Genre:</strong> {movie.genre}</p>
-            <p><strong>Description:</strong> {movie.description}</p>
+          <div className="mb-1">
+            <strong>Directed by:</strong> {movie.director}
+          </div>
+          <div className="mb-1">
+            <strong>Year:</strong> {movie.year}
+          </div>
+          <div className="mb-1">
+            <strong>Genre:</strong> {movie.genre}
+          </div>
+          <div className="mb-2">
+            <strong>Description:</strong> {movie.description}
+          </div>
 
-            {/* COMMENTS */}
-            <div className="mb-3">
-              <strong>Comments:</strong>
-              <ListGroup variant="flush" className="mt-2">
-                {movie.comments?.length > 0 ? (
-                  [...movie.comments].reverse().map((c) => (
-                    <ListGroup.Item key={c._id}>{c.comment}</ListGroup.Item>
-                  ))
-                ) : (
-                  <ListGroup.Item className="text-muted">
-                    No comments yet. Be the first to comment!
+          {/* COMMENTS */}
+          <div className="mb-2">
+            <strong>Comments:</strong>
+            <ListGroup variant="flush" className="mt-1">
+              {movie.comments?.length > 0 ? (
+                [...movie.comments].reverse().map((c) => (
+                  <ListGroup.Item key={c._id} className="py-1">
+                    {c.comment}
                   </ListGroup.Item>
-                )}
-              </ListGroup>
-            </div>
+                ))
+              ) : (
+                <ListGroup.Item className="text-muted py-1">
+                  No comments yet. Be the first to comment!
+                </ListGroup.Item>
+              )}
+            </ListGroup>
+          </div>
 
-            {/* ADD COMMENT */}
-            <Form.Group className="mb-3">
-              <Form.Label>Add Comment</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                placeholder="Write your comment..."
-              />
-            </Form.Group>
+          {/* ADD COMMENT */}
+          <Form.Group className="mb-2">
+            <Form.Label className="mb-1">Add Comment</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={2}
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Write your comment..."
+            />
+          </Form.Group>
 
+          <Button size="sm" variant="danger" onClick={handleAddComment}>
+            Submit
+          </Button>
 
-            <Button variant="danger" onClick={handleAddComment}>
-              Submit
-            </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            className="ms-2"
+            onClick={() => navigate('/movies')}
+          >
+            Back
+          </Button>
+        </Card.Body>
+      </Card>
 
-            <Button
-              variant="secondary"
-              className="ms-2"
-              onClick={() => navigate('/movies')}
-            >
-              Back
-            </Button>
-          </Card.Body>
-        </Card>
       </Container>
     </div>
   );
