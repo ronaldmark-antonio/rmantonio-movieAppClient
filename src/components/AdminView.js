@@ -73,6 +73,14 @@ export default function AdminView() {
   // Add movie
   const handleAddMovie = async (e) => {
     e.preventDefault();
+
+    const formattedMovie = {
+      ...newMovie,
+      year: newMovie.year ? Number(newMovie.year) : undefined,
+      rating: newMovie.rating ? Number(newMovie.rating) : undefined,
+      duration: newMovie.duration ? Number(newMovie.duration) : undefined,
+    };
+
     try {
       const res = await fetch(
         'https://rmantonio-movieappserver.onrender.com/movies/addMovie',
@@ -82,18 +90,25 @@ export default function AdminView() {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(newMovie),
+          body: JSON.stringify(formattedMovie),
         }
       );
-      if (!res.ok) throw new Error('Failed to add movie');
+
+      if (!res.ok) {
+        const errorData = await res.json(); // 🔍 backend error details
+        console.error('Backend error:', errorData);
+        throw new Error('Failed to add movie');
+      }
+
       await refreshMovies();
-      notyf.success('Movie added successfully!');
-      handleClose();
+        notyf.success('Movie added successfully!');
+        handleClose();
     } catch (err) {
-      console.error('Error adding movie:', err);
-      notyf.error('Could not add movie.');
+        console.error('Error adding movie:', err);
+        notyf.error('Could not add movie.');
     }
   };
+
 
   // Edit movie
   const handleEditMovie = (movie) => {
@@ -340,7 +355,7 @@ export default function AdminView() {
                   value={newMovie.director}
                   onChange={handleChange}
                   required
-                  placeholder="Director's name"
+                  placeholder="Enter director's name"
                   style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem' }}
                 />
               </Form.Group>
@@ -354,7 +369,7 @@ export default function AdminView() {
                   value={newMovie.year}
                   onChange={handleChange}
                   required
-                  placeholder="Release year"
+                  placeholder="Enter release year"
                   min={1888}
                   max={new Date().getFullYear()}
                   style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem' }}
@@ -371,7 +386,7 @@ export default function AdminView() {
                   value={newMovie.description}
                   onChange={handleChange}
                   required
-                  placeholder="Brief movie description"
+                  placeholder="Enter movie description"
                   style={{ borderRadius: '12px', borderColor: '#ddd', padding: '10px 15px', fontSize: '1rem', resize: 'vertical' }}
                 />
               </Form.Group>
